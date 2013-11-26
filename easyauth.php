@@ -12,18 +12,18 @@ $hash_seed = "changme just type random stuff here blah^^^ggg";
 $default_page = "test.php";
 
 
-$mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-GLOBAL $mysqli;
+$easyAuthMySqlI = new mysqli($db_host, $db_user, $db_pass, $db_name);
+GLOBAL $easyAuthMySqlI;
 if(mysqli_connect_errno()) {
-	echo "mysqli connection Failed: " . mysqli_connect_errno();
+	echo "easyAuthMySqlI connection Failed: " . mysqli_connect_errno();
 	exit();
 }
 
 
 function fetchUsers() {
-    global $mysqli; 
+    global $easyAuthMySqlI;
     $sqlCmd = "select id,username,password,email,email_verified,guid,phone,firstname,lastname,created,updated from user";
-    $stmt = $mysqli->prepare($sqlCmd);
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $result = $stmt->execute();
     $stmt->bind_result($id, $username, $password,$email,$email_verified,$guid,$phone,$firstname,$lastname,$created,$updated);
     $rows = array();
@@ -44,9 +44,9 @@ function fetchUsers() {
 }
 
 function fetchUsersById($id) {
-    global $mysqli; 
+    global $easyAuthMySqlI;
     $sqlCmd = "select id,username,password,email,email_verified,guid,phone,firstname,lastname,created,updated from user where id=?";
-    $stmt = $mysqli->prepare($sqlCmd);
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $stmt->bind_param("i", $id);
     $result = $stmt->execute();
     $stmt->bind_result($id, $username, $password,$email,$email_verified,$guid,$phone,$firstname,$lastname,$created,$updated);
@@ -67,9 +67,9 @@ function fetchUsersById($id) {
     return $row;
 }
 function fetchUserByUsername($username) {
-    global $mysqli; 
+    global $easyAuthMySqlI;
     $sqlCmd = "select id,username,password,email,email_verified,guid,phone,firstname,lastname,created,updated from user where username=?";
-    $stmt = $mysqli->prepare($sqlCmd);
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $stmt->bind_param("s", $username);
     $result = $stmt->execute();
     $stmt->bind_result($id, $username, $password,$email,$email_verified,$guid,$phone,$firstname,$lastname,$created,$updated);
@@ -90,9 +90,9 @@ function fetchUserByUsername($username) {
     return $row;
 }
 function fetchUserByEmail($email) {
-    global $mysqli; 
+    global $easyAuthMySqlI;
     $sqlCmd = "select id,username,password,email,email_verified,guid,phone,firstname,lastname,created,updated from user where email=?";
-    $stmt = $mysqli->prepare($sqlCmd);
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $stmt->bind_param("s", $email);
     $result = $stmt->execute();
     $stmt->bind_result($id, $username, $password,$email,$email_verified,$guid,$phone,$firstname,$lastname,$created,$updated);
@@ -113,10 +113,10 @@ function fetchUserByEmail($email) {
     return $row;
 }
 function fetchUserByUsernameAndPassword($username,$password) {
-    global $mysqli; 
+    global $easyAuthMySqlI;
     $hPassword = doubleHash($password);
     $sqlCmd = "select id,username,password,email,email_verified,guid,phone,firstname,lastname,created,updated from user where username=? and password=?";
-    $stmt = $mysqli->prepare($sqlCmd);
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $stmt->bind_param("ss", $username,$hPassword);
     $result = $stmt->execute();
     $stmt->bind_result($id, $username, $password,$email,$email_verified,$guid,$phone,$firstname,$lastname,$created,$updated);
@@ -137,9 +137,9 @@ function fetchUserByUsernameAndPassword($username,$password) {
     return $row;
 }
 function fetchRoles() {
-    global $mysqli; 
+    global $easyAuthMySqlI;
     $sqlCmd = "select id,name from role";
-    $stmt = $mysqli->prepare($sqlCmd);
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $result = $stmt->execute();
     $stmt->bind_result($id, $name);
     $rows = array();
@@ -150,7 +150,7 @@ function fetchRoles() {
 }
 
 function fetchRolesForUserIdEx($id) {
-    global $mysqli; 
+    global $easyAuthMySqlI;
     $sqlCmd = "
         select ur.role_id,r.name 
         from 
@@ -161,7 +161,7 @@ function fetchRolesForUserIdEx($id) {
         r.id = ur.role_id
         where ur.user_id = ?;
 ";
-    $stmt = $mysqli->prepare($sqlCmd);
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $stmt->bind_param("i", $id);
     $result = $stmt->execute();
     $stmt->bind_result($role_id,$role_name);
@@ -174,10 +174,10 @@ function fetchRolesForUserIdEx($id) {
 
 
 function fetchUsersAndRoles() {
-    global $mysqli; 
+    global $easyAuthMySqlI;
     
     $sqlCmd = "select user_id, role_id from user_role;";
-    $stmt = $mysqli->prepare($sqlCmd);
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $result = $stmt->execute();
     $stmt->bind_result($user_id, $role_id);
     $rows = array();
@@ -189,7 +189,7 @@ function fetchUsersAndRoles() {
 
 
 function fetchUsersAndRolesEx() {
-    global $mysqli; 
+    global $easyAuthMySqlI;
     
     $sqlCmd = "
         select u.id, username, ur.role_id , r.name
@@ -204,7 +204,7 @@ function fetchUsersAndRolesEx() {
         on 
         r.id = ur.role_id;
         ";
-    $stmt = $mysqli->prepare($sqlCmd);
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $result = $stmt->execute();
     $stmt->bind_result($aa, $bb, $cc,$dd);
     $rows = array();
@@ -221,7 +221,7 @@ function fetchUsersAndRolesEx() {
 
 
 function fetchUserForRole($role_id) {
-    global $mysqli; 
+    global $easyAuthMySqlI;
     $sqlCmd = "
         select u.id,username from 
         user u
@@ -233,7 +233,7 @@ function fetchUserForRole($role_id) {
         ;
 
 ";
-    $stmt = $mysqli->prepare($sqlCmd);
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $stmt->bind_param("i", $role_id);
     $result = $stmt->execute();
     $stmt->bind_result($user_id,$user_name);
@@ -245,30 +245,30 @@ function fetchUserForRole($role_id) {
 }
 
 function addUser($username,$password,$email,$phone,$firstname,$lastname) {
-    global $mysqli; 
+    global $easyAuthMySqlI;
     $guid = generateGuid();
     $hPassword = doubleHash($password);
     $sqlCmd = "insert into user (username,password,email,guid,phone,firstname,lastname,created) values (?,?,?,?,?,?,?,now())";
-    $stmt = $mysqli->prepare($sqlCmd);
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $stmt->bind_param("sssssss", $username,$hPassword,$email,$guid,$phone,$firstname,$lastname);
     $stmt->execute();
     return $stmt;
 }
 function addRole($role_name) {
-    global $mysqli; 
+    global $easyAuthMySqlI;
     $sqlCmd = "insert into role (name) values (?);";
-    $stmt = $mysqli->prepare($sqlCmd);
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $stmt->bind_param("s", $role_name);
     $result = $stmt->execute();
     $bothret = array('stmt' => $stmt,'result' => $result);
     return $bothret;
 }
 function addRoleForUser($user_id,$role_id) {
-    global $mysqli; 
+    global $easyAuthMySqlI;
     //$guid = generateGuid();
     //$hPassword = doubleHash($password);
     $sqlCmd = "insert into user_role (user_id,role_id) values (?,?)";
-    $stmt = $mysqli->prepare($sqlCmd);
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $stmt->bind_param("ii", $user_id,$role_id);
     $result = $stmt->execute();
     $bothret = array('stmt' => $stmt,'result' => $result);
@@ -277,36 +277,36 @@ function addRoleForUser($user_id,$role_id) {
 
 
 function deleteUser($id) {
-    global $mysqli; 
+    global $easyAuthMySqlI;
     $sqlCmd = "delete from user where id = ? ;";
-    $stmt = $mysqli->prepare($sqlCmd);
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $stmt->bind_param("i", $id);
     $result = $stmt->execute();
     return $result;
 }
 
 function deleteUserRole($user_id,$role_id) {
-    global $mysqli; 
+    global $easyAuthMySqlI;
     $sqlCmd = "
         delete from user_role where user_id = ? and role_id = ?;
 ";
-    $stmt = $mysqli->prepare($sqlCmd);
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $stmt->bind_param("ii", $user_id,$role_id);
     $result = $stmt->execute();
     return $result;
 }
 function deleteRole($id) {
-    global $mysqli; 
+    global $easyAuthMySqlI;
     $sqlCmd = "delete from role where id = ? ;";
-    $stmt = $mysqli->prepare($sqlCmd);
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $stmt->bind_param("i", $id);
     $result = $stmt->execute();
     return $result;
 }
 function deleteUserRoleForUser($id) {
-    global $mysqli; 
+    global $easyAuthMySqlI;
     $sqlCmd = "delete from user_role where user_id = ? ;";
-    $stmt = $mysqli->prepare($sqlCmd);
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $stmt->bind_param("i", $id);
     $result = $stmt->execute();
     return $result;
@@ -314,9 +314,9 @@ function deleteUserRoleForUser($id) {
 
 
 function deleteUserRoleForRole($id) {
-    global $mysqli; 
+    global $easyAuthMySqlI;
     $sqlCmd = "delete from user_role where role_id = ? ;";
-    $stmt = $mysqli->prepare($sqlCmd);
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $stmt->bind_param("i", $id);
     $result = $stmt->execute();
     return $result;
@@ -326,23 +326,23 @@ function deleteUserRoleForRole($id) {
 
 
 function clearAllUsers() {
-    global $mysqli; 
-    $stmt = $mysqli->prepare("truncate table user");
+    global $easyAuthMySqlI;
+    $stmt = $easyAuthMySqlI->prepare("truncate table user");
     $result = $stmt->execute();
     echo "<pre>";     print_r($stmt);     echo "</pre>";
 }
 
 
 function clearAllRoles() {
-    global $mysqli; 
-    $stmt = $mysqli->prepare("truncate table role");
+    global $easyAuthMySqlI;
+    $stmt = $easyAuthMySqlI->prepare("truncate table role");
     $result = $stmt->execute();
     echo "<pre>";     print_r($stmt);     echo "</pre>";
 }
 
 function clearAllUserRoles() {
-    global $mysqli; 
-    $stmt = $mysqli->prepare("truncate table user_role");
+    global $easyAuthMySqlI;
+    $stmt = $easyAuthMySqlI->prepare("truncate table user_role");
     $result = $stmt->execute();
     echo "<pre>";     print_r($stmt);     echo "</pre>";
 }
@@ -350,7 +350,7 @@ function clearAllUserRoles() {
 
 
 function updateUser($firstname,$lastname,$username,$email,$phone,$id){
-    global $mysqli; 
+    global $easyAuthMySqlI;
     logme("updateUser($firstname,$lastname,$username,$email,$phone,$id)");
     
     $sqlCmd = "
@@ -366,7 +366,7 @@ function updateUser($firstname,$lastname,$username,$email,$phone,$id){
         ;
      ";
     
-    $stmt = $mysqli->prepare($sqlCmd);
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $stmt->bind_param("sssssi", $firstname,$lastname,$username,$email,$phone,$id);
     $result = $stmt->execute();
     return $result;
