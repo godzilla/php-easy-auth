@@ -3,14 +3,12 @@
 if (isset($_REQUEST['_SESSION'])) die();
 session_start();
 
-
-$db_host = "localhost"; 
+$db_host = "localhost";
 $db_name = "authdb";
-$db_user = "adminuser"; 
-$db_pass = "passw0rd"; 
+$db_user = "adminuser";
+$db_pass = "passw0rd";
 $hash_seed = "changme just type random stuff here blah^^^ggg";
 $default_page = "test.php";
-
 
 $easyAuthMySqlI = new mysqli($db_host, $db_user, $db_pass, $db_name);
 GLOBAL $easyAuthMySqlI;
@@ -28,16 +26,16 @@ function fetchUsers() {
     $stmt->bind_result($id, $username, $password,$email,$email_verified,$guid,$phone,$firstname,$lastname,$created,$updated);
     $rows = array();
     while ($stmt->fetch()){
-        $rows[$id] = array( 'username' => $username,  
+        $rows[$id] = array( 'username' => $username,
                             'password' => $password,
-                            'email' => $email, 
-                            'email_verified' => $email_verified, 
-                            'guid' => $guid, 
-                            'phone' => $phone, 
-                            'firstname' => $firstname, 
-                            'lastname' => $lastname, 
-                            'created'=>$created, 
-                            'updated'=>$updated 
+                            'email' => $email,
+                            'email_verified' => $email_verified,
+                            'guid' => $guid,
+                            'phone' => $phone,
+                            'firstname' => $firstname,
+                            'lastname' => $lastname,
+                            'created'=>$created,
+                            'updated'=>$updated
                     );
     }
     return $rows;
@@ -52,16 +50,16 @@ function fetchUsersById($id) {
     $stmt->bind_result($id, $username, $password,$email,$email_verified,$guid,$phone,$firstname,$lastname,$created,$updated);
     $row = array();
     while ($stmt->fetch()){
-        $row = array( 'username' => $username,  
+        $row = array( 'username' => $username,
                             'password' => $password,
-                            'email' => $email, 
-                            'email_verified' => $email_verified, 
-                            'guid' => $guid, 
-                            'phone' => $phone, 
-                            'firstname' => $firstname, 
-                            'lastname' => $lastname, 
-                            'created'=>$created, 
-                            'updated'=>$updated 
+                            'email' => $email,
+                            'email_verified' => $email_verified,
+                            'guid' => $guid,
+                            'phone' => $phone,
+                            'firstname' => $firstname,
+                            'lastname' => $lastname,
+                            'created'=>$created,
+                            'updated'=>$updated
                     );
     }
     return $row;
@@ -75,16 +73,17 @@ function fetchUserByUsername($username) {
     $stmt->bind_result($id, $username, $password,$email,$email_verified,$guid,$phone,$firstname,$lastname,$created,$updated);
     $row = array();
     while ($stmt->fetch()){
-        $row = array( 'username' => $username,  
+        $row = array(       'id' => $id,
+                            'username' => $username,
                             'password' => $password,
-                            'email' => $email, 
-                            'email_verified' => $email_verified, 
-                            'guid' => $guid, 
-                            'phone' => $phone, 
-                            'firstname' => $firstname, 
-                            'lastname' => $lastname, 
-                            'created'=>$created, 
-                            'updated'=>$updated 
+                            'email' => $email,
+                            'email_verified' => $email_verified,
+                            'guid' => $guid,
+                            'phone' => $phone,
+                            'firstname' => $firstname,
+                            'lastname' => $lastname,
+                            'created'=>$created,
+                            'updated'=>$updated
                     );
     }
     return $row;
@@ -98,16 +97,16 @@ function fetchUserByEmail($email) {
     $stmt->bind_result($id, $username, $password,$email,$email_verified,$guid,$phone,$firstname,$lastname,$created,$updated);
     $row = array();
     while ($stmt->fetch()){
-        $row = array( 'username' => $username,  
+        $row = array( 'username' => $username,
                             'password' => $password,
-                            'email' => $email, 
-                            'email_verified' => $email_verified, 
-                            'guid' => $guid, 
-                            'phone' => $phone, 
-                            'firstname' => $firstname, 
-                            'lastname' => $lastname, 
-                            'created'=>$created, 
-                            'updated'=>$updated 
+                            'email' => $email,
+                            'email_verified' => $email_verified,
+                            'guid' => $guid,
+                            'phone' => $phone,
+                            'firstname' => $firstname,
+                            'lastname' => $lastname,
+                            'created'=>$created,
+                            'updated'=>$updated
                     );
     }
     return $row;
@@ -122,16 +121,18 @@ function fetchUserByUsernameAndPassword($username,$password) {
     $stmt->bind_result($id, $username, $password,$email,$email_verified,$guid,$phone,$firstname,$lastname,$created,$updated);
     $row = array();
     while ($stmt->fetch()){
-        $row = array( 'username' => $username,  
+        $row = array(
+                            'id' => $id,
+                            'username' => $username,
                             'password' => $password,
-                            'email' => $email, 
-                            'email_verified' => $email_verified, 
-                            'guid' => $guid, 
-                            'phone' => $phone, 
-                            'firstname' => $firstname, 
-                            'lastname' => $lastname, 
-                            'created'=>$created, 
-                            'updated'=>$updated 
+                            'email' => $email,
+                            'email_verified' => $email_verified,
+                            'guid' => $guid,
+                            'phone' => $phone,
+                            'firstname' => $firstname,
+                            'lastname' => $lastname,
+                            'created'=>$created,
+                            'updated'=>$updated
                     );
     }
     return $row;
@@ -152,12 +153,12 @@ function fetchRoles() {
 function fetchRolesForUserIdEx($id) {
     global $easyAuthMySqlI;
     $sqlCmd = "
-        select ur.role_id,r.name 
-        from 
+        select ur.role_id,r.name
+        from
         user_role ur
-        join 
-        role r 
-        on 
+        join
+        role r
+        on
         r.id = ur.role_id
         where ur.user_id = ?;
 ";
@@ -167,7 +168,8 @@ function fetchRolesForUserIdEx($id) {
     $stmt->bind_result($role_id,$role_name);
     $rows = array();
     while ($stmt->fetch()){
-        $rows[] = array('role_id' =>  $role_id, 'role_name' => $role_name);
+        //$rows[] = array('role_id' =>  $role_id, 'role_name' => $role_name);
+        $rows[$role_id] =  $role_name;
     }
     return $rows;
 }
@@ -175,7 +177,7 @@ function fetchRolesForUserIdEx($id) {
 
 function fetchUsersAndRoles() {
     global $easyAuthMySqlI;
-    
+
     $sqlCmd = "select user_id, role_id from user_role;";
     $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $result = $stmt->execute();
@@ -190,18 +192,18 @@ function fetchUsersAndRoles() {
 
 function fetchUsersAndRolesEx() {
     global $easyAuthMySqlI;
-    
+
     $sqlCmd = "
         select u.id, username, ur.role_id , r.name
-        from 
+        from
         user u
         left join
         user_role ur
-        on 
+        on
         u.id = ur.user_id
         left join
-        role r 
-        on 
+        role r
+        on
         r.id = ur.role_id;
         ";
     $stmt = $easyAuthMySqlI->prepare($sqlCmd);
@@ -212,10 +214,10 @@ function fetchUsersAndRolesEx() {
         //$rows[$aa] = array();
         //$rows[$aa][] = $cc;
         $rows[] = array('id' => $aa, 'username'=>$bb, 'role_id'=> $cc, 'role_name'=>$dd);
-        
+
     }
     return $rows;
-    
+
 }
 
 
@@ -223,7 +225,7 @@ function fetchUsersAndRolesEx() {
 function fetchUserForRole($role_id) {
     global $easyAuthMySqlI;
     $sqlCmd = "
-        select u.id,username from 
+        select u.id,username from
         user u
         join
         user_role ur
@@ -352,26 +354,26 @@ function clearAllUserRoles() {
 function updateUser($firstname,$lastname,$username,$email,$phone,$id){
     global $easyAuthMySqlI;
     logme("updateUser($firstname,$lastname,$username,$email,$phone,$id)");
-    
+
     $sqlCmd = "
-        update user set 
-        firstname=?, 
+        update user set
+        firstname=?,
         lastname=?,
         username=?,
         email=?,
         phone=?,
         updated=now()
-        where 
+        where
         id=?;
         ;
      ";
-    
+
     $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $stmt->bind_param("sssssi", $firstname,$lastname,$username,$email,$phone,$id);
     $result = $stmt->execute();
     return $result;
-    
-    
+
+
 }
 
 function generateGuid(){
@@ -385,14 +387,14 @@ function generateGuid(){
                 . substr($charid,16, 4).$hyphen
                 . substr($charid,20,12);
                 //.chr(125);// "}"
-        
+
         return $uuid;
 }
 function doubleHash($instring){
     global $hash_seed;
     $hash2 =  $instring . $hash_seed;
     $hash3 = md5($hash2);
-    $hash4 = sha1($hash3);    
+    $hash4 = sha1($hash3);
     return $hash4;
 }
 function logout() {
@@ -412,15 +414,15 @@ function logout() {
 }
 
 function isLoggedIn() {
-    if(!empty($_SESSION) && $_SESSION['user'])  {
+    if(!empty($_SESSION) && $_SESSION['easyauth_user'])  {
         return true;
     }
     return FALSE;
 }
-function isLoggedInWithRole($inRole) {
-    if(!empty($_SESSION) && $_SESSION['user'])  {
-        foreach($_SESSION['user']['roles'] as $role) {
-            if($role['role_name'] == $inRole) {
+function isLoggedInWithRoleName($inRole) {
+    if(!empty($_SESSION) && $_SESSION['easyauth_user'])  {
+        foreach($_SESSION['easyauth_user']['roles'] as $role_id => $role_name) {
+            if($role_name == $inRole) {
                 return true;
             }
         }
@@ -428,8 +430,13 @@ function isLoggedInWithRole($inRole) {
     }
     return FALSE;
 }
+
+
+
+
+
 function gotoDefaultPage() {
-    global $default_page; 
+    global $default_page;
     header("location: $default_page");
 }
 

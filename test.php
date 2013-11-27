@@ -6,8 +6,8 @@ require_once "easyauth.php";
 if(!isLoggedIn()){
     header("location: login.php?return_page=test.php");
 } else {
-    $user_id = key($_SESSION['user']['user']);
-    $username = $_SESSION['user']['user'][$user_id]['username'];
+    $user_id = $_SESSION['easyauth_user']['id'];
+    $username = $_SESSION['easyauth_user']['username'];
 }
 
 
