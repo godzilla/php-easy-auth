@@ -25,7 +25,8 @@ adminform.php - form and code to manage users and roles
     $salt = "random^stuff!heretochange";  // 22 or more random characters
     $default_page = "index.php";
     $table_prefix = "easy_auth_prefix_";  // can be anything including ""
-        
+3. run setupandtst.php , this will create the tables and run a test on all the library functions
+
 
         
 
