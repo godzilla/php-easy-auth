@@ -18,7 +18,7 @@ adminform.php - form and code to manage users and roles<br>
 1. create mysql database or use existing one
 2. copy easyauth.php,login.php,logout.php to root of your php site
 3. add `require_once "easyauth.php";` to php files that need authintication
-4. edit configuration variables on top of easyauth.php
+4. edit configuration variables on top of easyauth.php<br>
 <code>
 $db_host = "localhost";<br>
 $db_name = "authdb";<br>
