@@ -172,3 +172,8 @@ echo "<pre>userRoleArray: "; print_r($userRoleArray); echo "</pre>";
     </select>
     <input type="submit" name="action" value="del_user_role">
 </form>
+
+
+<?php
+echo "<pre>"; print_r($_SESSION); echo "</pre>";
+?>

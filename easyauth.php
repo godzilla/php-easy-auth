@@ -220,6 +220,31 @@ function fetchUserByUsernameAndPassword($username,$password) {
     }
     return $row;
 }
+function fetchUserByUsernameAndHash($username,$hPassword) {
+    global $easyAuthMySqlI,$table_prefix;
+    $sqlCmd = "select id,username,password,email,email_verified,guid,phone,firstname,lastname,created,updated from ".$table_prefix."user where username=? and password=?";
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
+    $stmt->bind_param("ss", $username,$hPassword);
+    $result = $stmt->execute();
+    $stmt->bind_result($id, $username, $password,$email,$email_verified,$guid,$phone,$firstname,$lastname,$created,$updated);
+    $row = array();
+    while ($stmt->fetch()){
+        $row = array(
+                            'id' => $id,
+                            'username' => $username,
+                            'password' => $password,
+                            'email' => $email,
+                            'email_verified' => $email_verified,
+                            'guid' => $guid,
+                            'phone' => $phone,
+                            'firstname' => $firstname,
+                            'lastname' => $lastname,
+                            'created'=>$created,
+                            'updated'=>$updated
+                    );
+    }
+    return $row;
+}
 function fetchRoles() {
     global $easyAuthMySqlI,$table_prefix;
     $sqlCmd = "select id,name from ".$table_prefix."role";
@@ -300,6 +325,30 @@ function addRoleForUser($user_id,$role_id) {
     return $bothret;
 }
 
+
+
+function fetchRolesForUserIdEx($id) {
+      global $easyAuthMySqlI,$table_prefix;
+      $sqlCmd = "
+         select ur.role_id,r.name
+         from
+         ".$table_prefix."user_role ur
+         join
+         ".$table_prefix."role r
+         on
+         r.id = ur.role_id
+         where ur.user_id = ?;
+  ";
+    $stmt = $easyAuthMySqlI->prepare($sqlCmd);
+    $stmt->bind_param("i", $id);
+    $result = $stmt->execute();
+      $stmt->bind_result($role_id,$role_name);
+      $rows = array();
+      while ($stmt->fetch()){
+         $rows[$role_id] =  $role_name;
+      }
+      return $rows;
+  }
 
 function deleteUser($id) {
     global $easyAuthMySqlI,$table_prefix;
@@ -432,8 +481,15 @@ function logout() {
 }
 function isLoggedIn() {
     if(!empty($_SESSION) && $_SESSION['easyauth_user'])  {
-        return true;
+        $username = $_SESSION['easyauth_user']['username'];
+        $hPassword = $_SESSION['easyauth_user']['password'];
+        $user = fetchUserByUsernameAndHash($username,$hPassword);
+        
+        if($user) {
+            return true;
+        }
     }
+    logout();
     return FALSE;
 }
 function isLoggedInWithRoleName($inRole) {

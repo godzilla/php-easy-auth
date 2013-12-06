@@ -4,20 +4,20 @@ php-easy-auth
 a single file php library to manage users and roles on web site<br>
 <br>
 easyauth.php - authentication library<br>
-authdb.sql - mysql file to create tables in database<br>
 login.php - form and code to login<br>
 logout.php - code to logout<br>
-setupandtest.php - test authenication<br>
-adminform.php - form and code to manage users and roles<br>
+setupandtest.php - test authentication, remove from production site<br>
+adminform.php - form and code to manage users and roles, should not be on production site!<br>
+authtest.php - file to check that you are authenticated or not
 <br>
 
 
-
------------ steps to install ------------
+steps to install
+----------------
 
 1. create mysql database or use existing one
 2. copy easyauth.php,login.php,logout.php to root of your php site
-3. add `require_once "easyauth.php";` to php files that need authintication
+3. add `require_once "easyauth.php";` to php files that need authentication
 4. edit configuration variables on top of easyauth.php<br>
 <code>
 $db_host = "localhost";<br>
