@@ -9,6 +9,14 @@
 require_once "easyauth.php";
 $passed = true;
 
+$original_salt = "random^stuff!heretochange";
+
+if(isUsingOriginalSalt($original_salt)) {
+    $passed = false;
+    echo "<h1 class='fail'>using orignal salt of $original_salt<br>please change it in easyauth.php</h1>";
+    die();
+}
+
 dropTables();
 createTables();
 

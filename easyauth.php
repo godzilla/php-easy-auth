@@ -502,7 +502,12 @@ function isLoggedInWithRoleName($inRole) {
     }
     return FALSE;
 }
-
+function isUsingOriginalSalt($saltused) {
+    global $salt;
+    if($saltused == $salt)
+        return true;
+    return false;
+}
 function gotoDefaultPage() {
     global $default_page;
     header("location: $default_page");
