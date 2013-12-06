@@ -12,9 +12,22 @@ $default_page = "index.php";
 $table_prefix = "easy_auth_prefix_";  // can be anything including ""
 
 $easyAuthMySqlI = new mysqli($db_host, $db_user, $db_pass, $db_name);
+
 GLOBAL $easyAuthMySqlI;
-if(mysqli_connect_errno()) {
-	echo "easyAuthMySqlI connection Failed: " . mysqli_connect_errno();
+
+$connect_errno = mysqli_connect_errno();
+if($connect_errno) {
+        if($connect_errno == 1044) {
+            echo "<br>database $db_name not found<br>";
+        } else
+        if($connect_errno == 1045) {
+            echo "<br>bad username or password<br>";
+        } else
+        if($connect_errno == 2002) {
+            echo "<br>bad host $db_host<br>";
+        } else {
+	echo "<br>easyAuthMySqlI connection Failed: " . mysqli_connect_errno() . "<br>" ;
+        }
 	exit();
 }
 
