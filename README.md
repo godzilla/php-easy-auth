@@ -12,21 +12,24 @@ adminform.php - form and code to manage users and roles<br>
 <br>
 
 
------------ steps to install ------------<br>
-<br>
-1. create mysql database or use existing one<br>
-3. copy easyauth.php,login.php,logout.php to root of your php site<br>
-4. add `require_once "easyauth.php";` to php files that need authintication<br>
-2. edit configuration variables on top of easyauth.php
-    ```$db_host = "localhost";<br>
-    $db_name = "authdb";
-    $db_user = "adminuser";
-    $db_pass = "passw0rd";
-    $salt = "random^stuff!heretochange";  // 22 or more random characters
-    $default_page = "index.php";
-    $table_prefix = "easy_auth_prefix_";  // can be anything including ""
-    ```
-3. run setupandtst.php , this will create the tables and run a test on all the library functions
+
+----------- steps to install ------------
+
+1. create mysql database or use existing one
+2. copy easyauth.php,login.php,logout.php to root of your php site
+3. add `require_once "easyauth.php";` to php files that need authintication
+4. edit configuration variables on top of easyauth.php
+<code>
+$db_host = "localhost";<br>
+$db_name = "authdb";<br>
+$db_user = "adminuser";<br>
+$db_pass = "passw0rd";<br>
+$salt = "random^stuff!heretochange";  // 22 or more random characters<br>
+$default_page = "index.php";<br>
+$table_prefix = "easy_auth_prefix_";  // can be anything including ""<br>
+</code>
+5. Run setupandtst.php , this will create the tables and run a test on all the library functions
+
 
 
         
