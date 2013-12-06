@@ -484,7 +484,6 @@ function isLoggedIn() {
         $username = $_SESSION['easyauth_user']['username'];
         $hPassword = $_SESSION['easyauth_user']['password'];
         $user = fetchUserByUsernameAndHash($username,$hPassword);
-        
         if($user) {
             return true;
         }
