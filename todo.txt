@@ -1,0 +1,4 @@
+have setup create admin and guest
+2 authorozed apps are stomping on each other
+        laptopbattleship logs me out of bookmarks
+        

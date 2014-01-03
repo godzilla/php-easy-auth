@@ -1,15 +1,10 @@
 <?php
 
+require_once "settings.php";
+
 if (isset($_REQUEST['_SESSION'])) die();
 session_start();
 
-$db_host = "localhost";
-$db_name = "authdb";
-$db_user = "adminuser";
-$db_pass = "passw0rd";
-$salt = "random^stuff!heretochange";  // 22 or more random characters
-$default_page = "index.php";
-$table_prefix = "easy_auth_prefix_";  // can be anything including ""
 
 $easyAuthMySqlI = new mysqli($db_host, $db_user, $db_pass, $db_name);
 

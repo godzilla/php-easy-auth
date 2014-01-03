@@ -212,7 +212,10 @@ truncateTables();
 
 if($passed) {
     echo "<h1 class='pass'>all tests passed</h1>";
-    
+    addRole('admin');
+    addRole('guest');
+    echo "<h1>added roles admin and guest</h1>";
+
 }
 
 
