@@ -1,3 +1,8 @@
 2 authorozed apps are stomping on each other
         laptopbattleship logs me out of bookmarks
+
+
+generate a salt for each user, take out of config file
+        see https://crackstation.net/hashing-security.htm
+        
         

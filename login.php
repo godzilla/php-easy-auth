@@ -24,7 +24,7 @@ if(!empty($_REQUEST)) {
             $badpass = true;
         }
     } else {
-        logout();
+        //logout();
     }
 }
 
