@@ -5,9 +5,9 @@ if(!empty($_REQUEST)) {
     if(@$_REQUEST['username']  &&  $_REQUEST['password'] )  {
         $ret = fetchUserByUsernameAndPassword($_REQUEST['username'],$_REQUEST['password']);
         if(!empty($ret)) {
-            $_SESSION['easyauth_user']=fetchUserByUsername($_REQUEST['username']);
-            $user_id = $_SESSION['easyauth_user']['id'];
-            $_SESSION['easyauth_user']['roles'] = fetchRolesForUserIdEx($user_id);
+            $_SESSION['easyauth'][$company_domain][$product_name]=fetchUserByUsername($_REQUEST['username']);
+            $user_id = $_SESSION['easyauth'][$company_domain][$product_name]['id'];
+            $_SESSION['easyauth'][$company_domain][$product_name]['roles'] = fetchRolesForUserIdEx($user_id);
             if(@$_REQUEST['return_page']) {
                 $return_page = $_REQUEST['return_page'];
                 header("location: $return_page");

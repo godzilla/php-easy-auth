@@ -16,10 +16,36 @@ steps to install
 ----------------
 
 1. create mysql database or use existing one
-2. copy easyauth.php,login.php,logout.php to root of your php site
-3. add `require_once "easyauth.php";` to php files that need authentication
-4. rename settings.php.example to settings.php and edit<br>
-5. Run setupandtst.php , this will create the tables and run a test on all the library functions
+
+2. copy easyauth.php,login.php,logout.php,settings.php.example,setupandtest.php to root of your php site
+
+3. rename settings.php.example to settings.php and edit every line<br>
+
+4. Run setupandtest.php , this will create the tables and run a test on all the library functions
+
+You now have 3 new tables in your database<br>
+    easy_auth_prefix_user           // 1 row for every user, should be empty after test
+    easy_auth_prefix_role           // 1 row for every role, should have admin and guest
+    easy_auth_prefix_user_role      // 1 row for every relation between the other 2 tables, should be empty after test
+
+
+5. If the tests pass remove setupadntest.php from production env
+
+6. add `require_once "easyauth.php";` to very top of php files that need authentication
+
+7. add to same file:
+    if(!isLoggedIn()){
+        header("location: login.php?return_page=index.php");
+    } else {
+        $user_id = $_SESSION['easyauth'][$company_domain][$product_name]['id'];
+        $username = $_SESSION['easyauth'][$company_domain][$product_name]['username'];
+    }
+
+
+you can copy adminform.php (temporarily) to site to create initial users, do not leave this file on production site!
+
+    
+
 
 
 

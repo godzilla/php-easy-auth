@@ -6,3 +6,6 @@ generate a salt for each user, take out of config file
         see https://crackstation.net/hashing-security.htm
         
         
+create an initial admin:admin user and wrap adminform page
+    admin page has nag until admin changes password
+    

@@ -1,3 +1,4 @@
+
 <?php
 
 require_once "easyauth.php";
@@ -49,11 +50,26 @@ if($action) {
         deleteUserRole($user_id,$role_id);
     }
     
+    if($action == 'drop'){
+        dropTables();
+    }
     
+    if($action == 'logout'){
+        logout();
+    }
     
 }
 
+?>
+<title>adminform</title>
+<style>
+    h1 {
+        color: red;
+    }
+</style>
+<?php
 
+echo "<h1>take off prouction site</h1>";
 
 $users = fetchUsers();
 echo "<pre>users: "; print_r($users); echo "</pre>";
@@ -61,13 +77,8 @@ echo "<pre>users: "; print_r($users); echo "</pre>";
 $roles = fetchRoles();
 echo "<pre>roles: "; print_r($roles); echo "</pre>";
 
-
-
 $usersAndRoles = fetchUsersAndRoles();
 //echo "<pre>users and roles: "; print_r($usersAndRoles); echo "</pre>";
-
-
-
 
 $userRoleArray = array();
 foreach($usersAndRoles as $usersAndRole) {
@@ -81,14 +92,19 @@ foreach($usersAndRoles as $usersAndRole) {
     $userRoleArray[$idpair] = $namepair;
 }
 
+echo "<pre>userRoleArray: "; print_r($userRoleArray); echo "</pre><hr>";
 
-echo "<pre>userRoleArray: "; print_r($userRoleArray); echo "</pre>";
 
+if(!isLoggedIn()){
+    echo "not logged in<br>";
+} else {
+    $user_id = $_SESSION['easyauth'][$company_domain][$product_name]['id'];
+    $username = $_SESSION['easyauth'][$company_domain][$product_name]['username'];
+    echo "$username ($user_id) logged in<br>";
+}
 ?>
 
 <hr>
-
-
 
 <form>
     <input type="text" name="username" placeholder="username" required>
@@ -106,19 +122,12 @@ echo "<pre>userRoleArray: "; print_r($userRoleArray); echo "</pre>";
     <select name='user_id'>
         <?php
         foreach($users as $user_id => $user) {
-            
             echo "<option value='$user_id'>{$user['username']}</option>";
-            
         }
         ?>
-        
     </select>
     <input type="submit" name="action" value="del_user">
 </form>
-
-
-
-
 
 
 <form>
@@ -173,6 +182,15 @@ echo "<pre>userRoleArray: "; print_r($userRoleArray); echo "</pre>";
     <input type="submit" name="action" value="del_user_role">
 </form>
 
+
+
+<form>
+    <input type="submit" name="action" value="drop">
+</form>
+
+<form>
+    <input type="submit" name="action" value="logout">
+</form>
 
 <?php
 echo "<pre>_SESSION "; print_r($_SESSION); echo "</pre>";

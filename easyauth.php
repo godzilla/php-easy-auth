@@ -1,7 +1,5 @@
 <?php
-
 require_once "settings.php";
-
 if (isset($_REQUEST['_SESSION'])) die();
 session_start();
 
@@ -99,7 +97,10 @@ function dropTables() {
 function fetchUsers() {
     global $easyAuthMySqlI,$table_prefix;
     $sqlCmd = "select id,username,password,email,email_verified,guid,phone,firstname,lastname,created,updated from ".$table_prefix."user";
+    //echo "sqlCmd: $sqlCmd<br>";
+    //echo "<pre>easyAuthMySqlI:";     print_r($easyAuthMySqlI);     echo "</pre>"; 
     $stmt = $easyAuthMySqlI->prepare($sqlCmd);
+    //echo "<pre>stmt:";     print_r($stmt);     echo "</pre>"; 
     $result = $stmt->execute();
     $stmt->bind_result($id, $username, $password,$email,$email_verified,$guid,$phone,$firstname,$lastname,$created,$updated);
     $rows = array();
@@ -189,10 +190,19 @@ function fetchUserByEmail($email) {
     }
     return $row;
 }
+
+
+
 function fetchUserByUsernameAndPassword($username,$password) {
     global $easyAuthMySqlI,$table_prefix;
+    
+    //echo "password is $password<br>";
     $hPassword = doubleHash($password);
+    //echo "hPassword is $hPassword<br>";
+    
     $sqlCmd = "select id,username,password,email,email_verified,guid,phone,firstname,lastname,created,updated from ".$table_prefix."user where username=? and password=?";
+    
+    
     $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $stmt->bind_param("ss", $username,$hPassword);
     $result = $stmt->execute();
@@ -334,6 +344,7 @@ function fetchRolesForUserIdEx($id) {
          r.id = ur.role_id
          where ur.user_id = ?;
   ";
+      
     $stmt = $easyAuthMySqlI->prepare($sqlCmd);
     $stmt->bind_param("i", $id);
     $result = $stmt->execute();
@@ -451,15 +462,29 @@ function generateGuid(){
 
         return $uuid;
 }
+
+function doubleHashOld($instring){
+    global $hash_seed;
+    $hash2 =  $instring . $hash_seed;
+    $hash3 = md5($hash2);
+    $hash4 = sha1($hash3);
+    return $hash4;
+}
+
+
 function doubleHash($instring){
     global $salt;
-    $hash_format = "$2y$11$";
-    $saltAndFormat = $hash_format . $salt;
-    $hash = crypt($instring,$saltAndFormat);
+    //$hash_format = "$2y$11$";
+    //$saltAndFormat = $hash_format . $salt;
+    //$hash = crypt($instring,$saltAndFormat);
+    $hash2 =  $instring . $salt;
+    $hash3 = md5($hash2);
+    $hash = sha1($hash3);
     return $hash;
     
 }
 function logout() {
+    global $company_domain,$product_name;
     // http://php.net/manual/en/function.session-unset.php
     @session_start();
     session_unset();
@@ -471,13 +496,17 @@ function logout() {
     session_start();
     session_destroy();
     session_unset();
-     unset ($_SESSION['user']);
-    $_SESSION['user'] = null;
+     unset ($_SESSION['easyauth'][$company_domain][$product_name]);
+    //$_SESSION['easyauth'] = null;
+    // unset ($_SESSION['easyauth']);
+    
 }
 function isLoggedIn() {
-    if(!empty($_SESSION) && $_SESSION['easyauth_user'])  {
-        $username = $_SESSION['easyauth_user']['username'];
-        $hPassword = $_SESSION['easyauth_user']['password'];
+    global $company_domain,$product_name;
+    
+    if(!empty($_SESSION) && $_SESSION['easyauth'][$company_domain][$product_name])  {
+        $username = $_SESSION['easyauth'][$company_domain][$product_name]['username'];
+        $hPassword = $_SESSION['easyauth'][$company_domain][$product_name]['password'];
         $user = fetchUserByUsernameAndHash($username,$hPassword);
         if($user) {
             return true;
@@ -487,8 +516,9 @@ function isLoggedIn() {
     return FALSE;
 }
 function isLoggedInWithRoleName($inRole) {
-    if(!empty($_SESSION) && $_SESSION['easyauth_user'])  {
-        foreach($_SESSION['easyauth_user']['roles'] as $role_id => $role_name) {
+    global $company_domain,$product_name;
+    if(!empty($_SESSION) && $_SESSION['easyauth'][$company_domain][$product_name])  {
+        foreach($_SESSION['easyauth'][$company_domain][$product_name]['roles'] as $role_id => $role_name) {
             if($role_name == $inRole) {
                 return true;
             }

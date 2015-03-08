@@ -1,19 +1,29 @@
+<?php
+require_once "easyauth.php";
+?>
+<title>setupandtest</title>
 <style>
     .fail {color: red;}
     .pass {color: green;}
 </style>
 
-<?php
-//echo "<pre>"; print_r($user2); echo "</pre>";
 
-require_once "easyauth.php";
+
+<?php
+
+
+
+
 $passed = true;
 
 $original_salt = "random^stuff!heretochange";
 
+
+
+
 if(isUsingOriginalSalt($original_salt)) {
     $passed = false;
-    echo "<h1 class='fail'>using orignal salt of $original_salt<br>please change it in easyauth.php</h1>";
+    echo "<h1 class='fail'>using orignal salt of $original_salt<br>please change it in settings.php</h1>";
     die();
 }
 

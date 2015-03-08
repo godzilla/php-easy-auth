@@ -1,12 +1,51 @@
 <?php
-
+/*
+ database host, usually 'localhost' 
+ */
 $db_host = "localhost";
+
+/*
+ name of database for auth information, can share with other products using easyauth 
+ if both have different $table_prefix
+ */
 $db_name = "authdb";
+
+
+/*
+ name and password to have full rights to tables including creation and droping 
+ */
 $db_user = "adminuser";
 $db_pass = "passw0rd";
-$salt = "random^stuff!heretochange";  // 22 or more random characters
+
+/*
+ salt added to password before encryption,  make this long and randomy
+ */
+$salt = "random^stuff!heretochange";  
+
+
+/*
+ default page that good longin goes to, can be over riddeen
+ */
 $default_page = "index.php";
-$table_prefix = "easy_auth_prefix_";  // can be anything including ""
+
+
+/*
+added to begining of database table names
+can be blank but that might cause name colision with another program  
+ */
+$table_prefix = "easy_auth_prefix_";  
+
+
+/*
+for $SESSION var namespace to avoid colision with product from another company
+ */
+$company_domain = "example.com";
+
+
+/*
+for $SESSION var namespace to avoid colision with another product using easyauth
+ */
+$product_name = "crud_site";
 
   
   
