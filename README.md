@@ -34,13 +34,14 @@ You now have 3 new tables in your database<br>
 6. add `require_once "easyauth.php"` to very top of php files that need authentication
 
 7. add to same file:
+    <pre>
     if(!isLoggedIn()){
         header("location: login.php?return_page=index.php");
     } else {
         $user_id = $_SESSION['easyauth'][$company_domain][$product_name]['id'];
         $username = $_SESSION['easyauth'][$company_domain][$product_name]['username'];
     }
-
+    </pre>
 
 you can copy adminform.php (temporarily) to site to create initial users, do not leave this file on production site!
 
