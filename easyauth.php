@@ -484,21 +484,9 @@ function doubleHash($instring){
     
 }
 function logout() {
-    global $company_domain,$product_name;
-    // http://php.net/manual/en/function.session-unset.php
-    @session_start();
-    session_unset();
-    session_destroy();
-    session_write_close();
-    setcookie(session_name(),'',0,'/');
-    session_regenerate_id(true);
-    // my stuff
-    session_start();
-    session_destroy();
-    session_unset();
+    global $company_domain,$product_name,$default_page;
      unset ($_SESSION['easyauth'][$company_domain][$product_name]);
-    //$_SESSION['easyauth'] = null;
-    // unset ($_SESSION['easyauth']);
+     header("location: $default_page");
     
 }
 function isLoggedIn() {
