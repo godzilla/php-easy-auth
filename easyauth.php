@@ -19,7 +19,7 @@ if($connect_errno) {
         if($connect_errno == 2002) {
             echo "<br>bad host $db_host<br>";
         } else {
-	echo "<br>easyAuthMySqlI connection Failed: " . mysqli_connect_errno() . "<br>" ;
+	echo "<br>easyAuthMySqlI connection Failed: $connect_errno<br>" ;
         }
 	exit();
 }
