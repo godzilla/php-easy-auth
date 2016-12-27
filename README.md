@@ -31,7 +31,7 @@ You now have 3 new tables in your database<br>
 
 5. If the tests pass remove setupadntest.php from production env
 
-6. add `require_once "easyauth.php"` to very top of php files that need authentication
+6. add `require_once "easyauth.php";` to very top of php files that need authentication
 
 7. add to same file:
     <pre>
