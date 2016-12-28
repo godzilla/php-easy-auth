@@ -36,7 +36,7 @@ You now have 3 new tables in your database<br>
 7. add to same file:
     <pre>
     if(!isLoggedIn()){
-        header("location: login.php?return_page=index.php");
+        header("location: login.php");
     } else {
         $user_id = $_SESSION['easyauth'][$company_domain][$product_name]['id'];
         $username = $_SESSION['easyauth'][$company_domain][$product_name]['username'];
