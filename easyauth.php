@@ -500,7 +500,6 @@ function isLoggedIn() {
             return true;
         }
     }
-    //logout();
     return FALSE;
 }
 function isLoggedInWithRoleName($inRole) {
